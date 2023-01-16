@@ -45,18 +45,30 @@ class Animal:
         self.gender = gender
         self.health = health
         self.live = True
-    def hbl (self):
-        self.health -=5
-        if  self.health < 0:
-            global mode
-            mode = "end"
+
     def died (self):
         self.live = False
 
     def draw(self):
         if self.live:
             win.blit(self.image_tooshonka, [self.x,self.y]) 
-    
+
+    def control(self): 
+        keys = key.get_pressed()
+        if keys[K_d]: self.run(5)
+        if keys[K_a]: self.run(-5)
+        if keys[K_w]: self.up(3)
+        if keys[K_s]: self.up(-3)
+        if self.x  < 0:
+            self.x = 0 
+        if self.x + self.c > w:
+            self.x = w - self.c
+ 
+        if self.y + self.d > h:
+            self.y = h - self.d 
+        if self.y  < 0:
+            self.y = 0   
+
     def run(self,m):
         self.x += m
  
@@ -103,35 +115,6 @@ class Cat(Animal):
         self.scary_image = image.load(scary)
         self.scary_image = transform.scale(self.scary_image, [c,d])
         self.touch = False
-
-        self.hp_bar = Rect(x, y, c, 10)
-    
-    def control(self): 
-        keys = key.get_pressed()
-        if keys[K_d]: self.run(5)
-        if keys[K_a]: self.run(-5)
-        if keys[K_w]: self.up(3)
-        if keys[K_s]: self.up(-3)
-        if self.x  < 0:
-            self.x = 0 
-        if self.x + self.c > w:
-            self.x = w - self.c
- 
-        if self.y + self.d > h:
-            self.y = h - self.d 
-        if self.y  < 0:
-            self.y = 0   
-
-    def run(self,m):
-        self.x += m
-        self.hp_bar = Rect(self.x, self.y, self.c, 10)
- 
-    def up(self,m):
-        self.y -= m
-        self.hp_bar = Rect(self.x, self.y, self.c, 10)
- 
-    def draw_hp_bar(self):
-        draw.rect(win, (255,0,0), self.hp_bar)
 
     def colidde(self,dog):
         self.rect = Rect(self.x,self.y,self.c,self.d) 
@@ -206,8 +189,8 @@ class Laser:
         aim.rect = Rect(aim.x,aim.y,aim.c,aim.d) 
         if self.rect.colliderect(aim.rect):
             if aim.name == "bonya":
-                aim.hbl()
-               
+                global mode
+                mode = "end"
             else:
                 aim.died()
 
@@ -250,6 +233,7 @@ def mainloop():
         clock.tick(60)
         time_tagger += 1/30
         
+ 
         for doom in event.get():
             if doom.type == QUIT: exit()
             if mode == "end" and doom.type == KEYDOWN and doom.key == K_ESCAPE: exit()
@@ -264,7 +248,7 @@ def mainloop():
                 if int(time_tagger) == hehehaha.tts :
                     hehehaha.csgo = True
                     hehehaha.laser()
-                    hehehaha.tts += 2
+                    hehehaha.tts +=1
 
                 for laser in lasers:
                     laser.draw()
@@ -282,7 +266,6 @@ def mainloop():
             patrol.draw()
             patrol.patr(b)
             b.draw()
-            b.draw_hp_bar()
             bobik.draw()
             t.draw()
             b.control()
@@ -296,5 +279,6 @@ def mainloop():
 mainloop()    
 # полоска со здоровьем  
 # подарки со здоровьем
+# замедлить лазеры
 # добавить урон
 #0.6666666666666666
