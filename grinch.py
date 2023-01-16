@@ -56,23 +56,7 @@ class Animal:
     def draw(self):
         if self.live:
             win.blit(self.image_tooshonka, [self.x,self.y]) 
-
-    def control(self): 
-        keys = key.get_pressed()
-        if keys[K_d]: self.run(5)
-        if keys[K_a]: self.run(-5)
-        if keys[K_w]: self.up(3)
-        if keys[K_s]: self.up(-3)
-        if self.x  < 0:
-            self.x = 0 
-        if self.x + self.c > w:
-            self.x = w - self.c
- 
-        if self.y + self.d > h:
-            self.y = h - self.d 
-        if self.y  < 0:
-            self.y = 0   
-
+    
     def run(self,m):
         self.x += m
  
@@ -119,7 +103,36 @@ class Cat(Animal):
         self.scary_image = image.load(scary)
         self.scary_image = transform.scale(self.scary_image, [c,d])
         self.touch = False
+
+        self.hp_bar = Rect(x, y, c, 10)
     
+    def control(self): 
+        keys = key.get_pressed()
+        if keys[K_d]: self.run(5)
+        if keys[K_a]: self.run(-5)
+        if keys[K_w]: self.up(3)
+        if keys[K_s]: self.up(-3)
+        if self.x  < 0:
+            self.x = 0 
+        if self.x + self.c > w:
+            self.x = w - self.c
+ 
+        if self.y + self.d > h:
+            self.y = h - self.d 
+        if self.y  < 0:
+            self.y = 0   
+
+    def run(self,m):
+        self.x += m
+        self.hp_bar = Rect(self.x, self.y, self.c, 10)
+ 
+    def up(self,m):
+        self.y -= m
+        self.hp_bar = Rect(self.x, self.y, self.c, 10)
+ 
+    def draw_hp_bar(self):
+        draw.rect(win, (255,0,0), self.hp_bar)
+
     def colidde(self,dog):
         self.rect = Rect(self.x,self.y,self.c,self.d) 
         dog.rect = Rect(dog.x,dog.y,dog.c,dog.d) 
@@ -269,6 +282,7 @@ def mainloop():
             patrol.draw()
             patrol.patr(b)
             b.draw()
+            b.draw_hp_bar()
             bobik.draw()
             t.draw()
             b.control()
