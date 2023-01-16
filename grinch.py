@@ -46,7 +46,7 @@ class Animal:
         self.health = health
         self.live = True
     def hbl (self):
-        self.health -=1
+        self.health -=5
         if  self.health < 0:
             global mode
             mode = "end"
