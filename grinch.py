@@ -45,7 +45,11 @@ class Animal:
         self.gender = gender
         self.health = health
         self.live = True
-
+    def hbl (self):
+        self.health -=1
+        if  self.health < 0:
+            global mode
+            mode = "end"
     def died (self):
         self.live = False
 
@@ -115,7 +119,7 @@ class Cat(Animal):
         self.scary_image = image.load(scary)
         self.scary_image = transform.scale(self.scary_image, [c,d])
         self.touch = False
-
+    
     def colidde(self,dog):
         self.rect = Rect(self.x,self.y,self.c,self.d) 
         dog.rect = Rect(dog.x,dog.y,dog.c,dog.d) 
@@ -189,8 +193,8 @@ class Laser:
         aim.rect = Rect(aim.x,aim.y,aim.c,aim.d) 
         if self.rect.colliderect(aim.rect):
             if aim.name == "bonya":
-                global mode
-                mode = "end"
+                aim.hbl()
+               
             else:
                 aim.died()
 
