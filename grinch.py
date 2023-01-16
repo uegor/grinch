@@ -233,7 +233,6 @@ def mainloop():
         clock.tick(60)
         time_tagger += 1/30
         
- 
         for doom in event.get():
             if doom.type == QUIT: exit()
             if mode == "end" and doom.type == KEYDOWN and doom.key == K_ESCAPE: exit()
@@ -248,7 +247,7 @@ def mainloop():
                 if int(time_tagger) == hehehaha.tts :
                     hehehaha.csgo = True
                     hehehaha.laser()
-                    hehehaha.tts +=1
+                    hehehaha.tts += 2
 
                 for laser in lasers:
                     laser.draw()
@@ -279,6 +278,5 @@ def mainloop():
 mainloop()    
 # полоска со здоровьем  
 # подарки со здоровьем
-# замедлить лазеры
 # добавить урон
 #0.6666666666666666
