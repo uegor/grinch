@@ -29,21 +29,22 @@ class Grinch:
                 self.csgo = False
             else:
                 lasers.pop(0)
+
 class  Pr:
-    def __init__(self,name,breed,weight,gender,health,filename,c,d,x,y): 
-        self.name = name
+    presents = []
+
+    def __init__(self,filename,c,d): 
+        
         self.image = image.load(filename)
         self.image = transform.scale(self.image, [c,d])
-        self.image_tooshonka = self.image
         self.d = d
         self.c = c
-        self.x = x
-        self.y = y 
-        self.breed = breed
-        self.weight = weight
-        self.gender = gender
-        self.health = health
-        self.live = True
+        self.x = randint(0, W)
+        self.y = randint(0, H) 
+        Pr.presents.append(self)
+
+    def draw(self):
+        win.blit(self.image, [self.x,self.y]) 
 
 
 class Animal:
@@ -276,6 +277,7 @@ def mainloop():
                     hehehaha.csgo = True
                     hehehaha.laser()
                     hehehaha.tts += 0.1
+                    Pr('тут название картинки',100, 100)
 
                 for laser in lasers:
                     laser.draw()
@@ -298,6 +300,9 @@ def mainloop():
             t.draw()
             b.control()
             bobik.move(b)
+
+            for pr in Pr.presents:
+                pr.draw()
  
         if mode == "end":
             win.blit(end_bg,[0,0])
