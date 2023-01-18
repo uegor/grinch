@@ -29,8 +29,7 @@ class Grinch:
                 self.csgo = False
             else:
                 lasers.pop(0)
-
-class Animal:
+class  Pr:
     def __init__(self,name,breed,weight,gender,health,filename,c,d,x,y): 
         self.name = name
         self.image = image.load(filename)
@@ -45,8 +44,19 @@ class Animal:
         self.gender = gender
         self.health = health
         self.live = True
+
+
+class Animal:
+    def __init__(self,filename,c,d,x,y): 
+        self.image = image.load(filename)
+        self.image = transform.scale(self.image, [c,d])
+        self.d = d
+        self.c = c
+        self.x = x
+        self.y = y 
+
     def hbl (self):
-        self.health -=5
+        self.health -=1 
         if  self.health < 0:
             global mode
             mode = "end"
@@ -103,7 +113,8 @@ class Cat(Animal):
         self.scary_image = image.load(scary)
         self.scary_image = transform.scale(self.scary_image, [c,d])
         self.touch = False
-
+        self.font = font.Font(None,20)
+        self.label =  self.font.render( str(self.health),True,(255,0,0)    )
         self.hp_bar = Rect(x, y, c, 10)
     
     def control(self): 
@@ -124,15 +135,16 @@ class Cat(Animal):
 
     def run(self,m):
         self.x += m
-        self.hp_bar = Rect(self.x, self.y, self.c, 10)
+        self.hp_bar = Rect(self.x, self.y-10, self.c, 10)
  
     def up(self,m):
         self.y -= m
-        self.hp_bar = Rect(self.x, self.y, self.c, 10)
+        self.hp_bar = Rect(self.x, self.y-10, self.c, 10)
  
     def draw_hp_bar(self):
         draw.rect(win, (255,0,0), self.hp_bar)
-
+        self.label =  self.font.render( str(self.health),True,(0,0,0))
+        win.blit(self.label, (self.x+50,self.y-10))
     def colidde(self,dog):
         self.rect = Rect(self.x,self.y,self.c,self.d) 
         dog.rect = Rect(dog.x,dog.y,dog.c,dog.d) 
@@ -196,9 +208,8 @@ class Laser:
         self.x = x 
         self.y = y
         self.h = randint(10,30)
-        lasers.append(self)
-
-    def draw(self):
+        lasers.append(self) 
+    def draw(self):     
         draw.rect(win, (255,0,0), Rect(0,self.y,self.x,self.h))
 
     def colide(self,aim):
@@ -261,10 +272,10 @@ def mainloop():
                 level2.colodde(b)
                 if time_tagger/60 > 0.30: level2.active = True
                 hehehaha.draw()
-                if int(time_tagger) == hehehaha.tts :
+                if int(time_tagger) == int (hehehaha.tts) :
                     hehehaha.csgo = True
                     hehehaha.laser()
-                    hehehaha.tts += 2
+                    hehehaha.tts += 0.1
 
                 for laser in lasers:
                     laser.draw()
