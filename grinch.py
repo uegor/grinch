@@ -39,22 +39,30 @@ class  Pr:
         self.image = transform.scale(self.image, [c,d])
         self.d = d
         self.c = c
-        self.x = randint(0, W)
-        self.y = randint(0, H) 
+        self.x = randint(0, w)
+        self.y = randint(0, h) 
         Pr.presents.append(self)
 
     def draw(self):
         win.blit(self.image, [self.x,self.y]) 
+        
 
 
 class Animal:
-    def __init__(self,filename,c,d,x,y): 
+    def __init__(self,name,breed,weight,gender,health,filename,c,d,x,y): 
+        self.name = name
         self.image = image.load(filename)
         self.image = transform.scale(self.image, [c,d])
+        self.image_tooshonka = self.image
         self.d = d
         self.c = c
         self.x = x
         self.y = y 
+        self.breed = breed
+        self.weight = weight
+        self.gender = gender
+        self.health = health
+        self.live = True
 
     def hbl (self):
         self.health -=1 
@@ -277,7 +285,7 @@ def mainloop():
                     hehehaha.csgo = True
                     hehehaha.laser()
                     hehehaha.tts += 0.1
-                    Pr('тут название картинки',100, 100)
+                    Pr('pr.png',100, 100)
 
                 for laser in lasers:
                     laser.draw()
