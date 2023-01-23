@@ -9,6 +9,7 @@ w,h = 1920,1080
 class Grinch:
     def __init__(self,health,filename,c,d,x,y): 
         self.image = image.load(filename)
+        self.active = True
         self.image = transform.scale(self.image, [c,d])
         self.image_tooshonka = self.image
         self.d = d
@@ -28,19 +29,24 @@ class Grinch:
         self.label =  self.font.render( str(self.health),True,(0,0,0))
         win.blit(self.label, (self.x+250,self.y))
     def laser (self):
-        if self.csgo:
+        if self.csgo and self.active:
             if len(lasers)< 5:
                 Laser(self.x,randint(0,h))
                 self.csgo = False
+                
             else:
                 lasers.pop(0)
                 
     def colodde(self,cat):
         self.rect = Rect(self.x,self.y,self.c,self.d) 
         cat.rect = Rect(cat.x,cat.y,cat.c,cat.d)
+        if self.active == False:
+            return 0
         if self.rect.colliderect(cat.rect):
             self.health -= 20
             cat.x = 0 
+        if self.health <= 0:
+            self.active = False
 class  Pr:
     presents = []
 
@@ -50,15 +56,19 @@ class  Pr:
         self.image = transform.scale(self.image, [c,d])
         self.d = d
         self.c = c
-        self.x = randint(0, w)
-        self.y = randint(0, h) 
+        self.x = randint(0, 1000)
+        self.y = randint(0, 1000) 
         Pr.presents.append(self)
 
     def draw(self):
         win.blit(self.image, [self.x,self.y]) 
-        
-
-
+    def colodde(self,cat):
+        self.rect = Rect(self.x,self.y,self.c,self.d) 
+        cat.rect = Rect(cat.x,cat.y,cat.c,cat.d)
+        if self.rect.colliderect(cat.rect):
+            cat.health += 30
+            Pr.presents.remove(self)
+            Pr('pr.png',100, 100) 
 class Animal:
     def __init__(self,name,breed,weight,gender,health,filename,c,d,x,y): 
         self.name = name
@@ -324,6 +334,7 @@ def mainloop():
 
             for pr in Pr.presents:
                 pr.draw()
+                pr.colodde(b)
  
         if mode == "end":
             win.blit(end_bg,[0,0])
