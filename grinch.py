@@ -18,10 +18,15 @@ class Grinch:
         self.tts = 1
         self.health = health
         self.csgo = False
-
+        self.font = font.Font(None,40)
+        self.label =  self.font.render( str(self.health),True,(255,0,0)    )
+        self.hp_bar = Rect(x, y, c, 10)
     def draw(self):
         win.blit(self.image_tooshonka, [self.x,self.y])
-
+    def draw_hp_bar(self):
+        draw.rect(win, (255,0,0), self.hp_bar)
+        self.label =  self.font.render( str(self.health),True,(0,0,0))
+        win.blit(self.label, (self.x+250,self.y))
     def laser (self):
         if self.csgo:
             if len(lasers)< 5:
@@ -29,7 +34,13 @@ class Grinch:
                 self.csgo = False
             else:
                 lasers.pop(0)
-
+                
+    def colodde(self,cat):
+        self.rect = Rect(self.x,self.y,self.c,self.d) 
+        cat.rect = Rect(cat.x,cat.y,cat.c,cat.d)
+        if self.rect.colliderect(cat.rect):
+            self.health -= 20
+            cat.x = 0 
 class  Pr:
     presents = []
 
@@ -281,6 +292,8 @@ def mainloop():
                 level2.colodde(b)
                 if time_tagger/60 > 0.30: level2.active = True
                 hehehaha.draw()
+                hehehaha.colodde(b)
+                hehehaha.draw_hp_bar()
                 if int(time_tagger) == int (hehehaha.tts) :
                     hehehaha.csgo = True
                     hehehaha.laser()
