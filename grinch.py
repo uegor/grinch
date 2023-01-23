@@ -273,7 +273,7 @@ end_bg = transform.scale(end_bg,[w,h])
 mode = "game"
 level = 1
 clock = time.Clock()
- 
+Pr('pr.png',100, 100)
 def mainloop():
     while True:
         global time_tagger
@@ -298,7 +298,7 @@ def mainloop():
                     hehehaha.csgo = True
                     hehehaha.laser()
                     hehehaha.tts += 0.1
-                    Pr('pr.png',100, 100)
+                    
 
                 for laser in lasers:
                     laser.draw()
