@@ -47,6 +47,9 @@ class Grinch:
             cat.x = 0 
         if self.health <= 0:
             self.active = False
+            lasers = []
+            global mode
+            mode = "win"
 class  Pr:
     presents = []
 
@@ -66,7 +69,7 @@ class  Pr:
         self.rect = Rect(self.x,self.y,self.c,self.d) 
         cat.rect = Rect(cat.x,cat.y,cat.c,cat.d)
         if self.rect.colliderect(cat.rect):
-            cat.health += 30
+            cat.health += 100
             Pr.presents.remove(self)
             Pr('pr.png',100, 100) 
 class Animal:
@@ -232,6 +235,11 @@ class Tel:
                     level = self.l_n
                     bg = image.load('room.jpg')
                     bg = transform.scale(bg,[w,h])
+                if self.l_n == 3:
+                    level = self.l_n
+                    bg = image.load('wol.png')
+                    bg = transform.scale(bg,[w,h])
+                    Pr('pr.png',100, 100)
 
 class Laser:
     def __init__(self,x,y):
@@ -275,15 +283,21 @@ level2 = Tel(c = 550, d=420 , x=w-550, y=h-418, l_n=2)
 level3 = Tel (c = 550, d=420 , x=w-550, y=h-418, l_n=3)
  
 win = display.set_mode([w,h])
-
+init()
+mixer.music.load('excition.mp3')
+mixer.music.set_volume(0.3) 
+mixer.music.play() 
 bg = image.load('room.png')
 bg = transform.scale(bg,[w,h])
 end_bg = image.load('u.jpg')
 end_bg = transform.scale(end_bg,[w,h])
+win_bg = image.load('win.png')
+win_bg = transform.scale(win_bg,[w,h])
 mode = "game"
 level = 1
 clock = time.Clock()
-Pr('pr.png',100, 100)
+    
+
 def mainloop():
     while True:
         global time_tagger
@@ -293,7 +307,7 @@ def mainloop():
         
         for doom in event.get():
             if doom.type == QUIT: exit()
-            if mode == "end" and doom.type == KEYDOWN and doom.key == K_ESCAPE: exit()
+            if (mode == "end"or mode == "win") and doom.type == KEYDOWN and doom.key == K_ESCAPE: exit()
  
         if mode == "game":
             win.blit(bg,[0,0])
@@ -301,6 +315,13 @@ def mainloop():
                 level2.draw()
                 level2.colodde(b)
                 if time_tagger/60 > 0.30: level2.active = True
+                 
+
+            if level == 2:
+                level3.draw()
+                level3.colodde(b)
+                if time_tagger/60 > 0.30: level3.active = True
+            if level == 3:
                 hehehaha.draw()
                 hehehaha.colodde(b)
                 hehehaha.draw_hp_bar()
@@ -314,13 +335,7 @@ def mainloop():
                     laser.draw()
                     laser.colide(b)
                     for dog in dogs:
-                       laser.colide(dog) 
-
-            if level == 2:
-                level3.draw()
-                level3.colodde(b)
-                if time_tagger/60 > 0.30: level3.active = True
-                        
+                       laser.colide(dog)            
             pot.draw()
             pot.patr(b)
             patrol.draw()
@@ -338,10 +353,12 @@ def mainloop():
  
         if mode == "end":
             win.blit(end_bg,[0,0])
- 
+        if mode == "win":
+            win.blit(win_bg,[0,0])
+        
         display.update()
  
 mainloop()    
-# полоска со здоровьем  
-# подарки со здоровьем
-# добавить урон
+# полоска со здоровьем \/ 
+# подарки со здоровьем\/
+# добавить урон\/
